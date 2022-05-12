@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  selenium-chrome:
+    container_name: selenium-chrome
+    image: selenium/standalone-chrome-debug:3.141.59
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+    shm_size: '2gb'
+
+  test-container:
+    container_name: wdio-test-container
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./report:/app/allure-report
+    environment:
+      - SELENIUM_HOST=selenium-chrome
+      - SELENIUM_PORT=4444
+      - SELENIUM_PROTOCOL=http
+    depends_on:
+      - selenium-chrome
