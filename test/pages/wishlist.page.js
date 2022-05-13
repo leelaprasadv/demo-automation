@@ -126,34 +126,13 @@ class WishlistPage extends Page {
     await this.confirmDeleteWishlist();
   }
 
-  async getAllWishlistNames() {
-    let wishlistNames = [];
-    for (const wishlistName of await this.lblAllWishlistNames) {
-      wishlistNames.push(await wishlistName.getText());
-    }
-    return wishlistNames;
-  }
-
   async purgeAllWishlists() {
     await this.open();
-    const wishlists = await this.getAllWishlistNames();
-
-    for (const wishlist of wishlists) {
-      await this.deleteWishlist(wishlist);
+    const wishlistNames = await this.lblAllWishlistNames
+    for (let wishlistName of wishlistNames) {
+      const wishlstName = await wishlistName.getText()
+      await this.deleteWishlist(wishlstName);
     }
-  }
-
-  async addToWishlist(productName, wishlist) {
-    const product = await this.getProductByName(productName);
-    await product.$(this.btnAddToWishList).click();
-    await this.waitForWishlistDialog();
-    let isExisting = await this.selectWishlistByName(wishlist).isExisting();
-    // console.log(await $('.swym-wishlist-items').value.length);
-    if (isExisting) {
-      await this.selectWishlistByName(wishlist).click();
-    }
-    await this.btnAddToListConfirm.click();
-    browser.saveScreenshot('./test/screenShots/addtowishlist.png')
   }
 
   async getWishListItems(wishlist) {
@@ -172,8 +151,9 @@ class WishlistPage extends Page {
   /**
    * overwrite specific options to adapt it to page object
    */
-  open() {
-    return super.open('pages/wishlist3');
+  async open() {
+    await super.open('pages/wishlist3');
+    browser.pause(2000);
   }
 }
 

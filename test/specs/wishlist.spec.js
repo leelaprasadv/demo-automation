@@ -18,7 +18,7 @@ describe('Add products to wishlist and share wishlist via email', () => {
     it('should cleanup wishlists', async () => {
         await WishlistPage.purgeAllWishlists();
     })
-    
+
     it('should add products to wishlist', async () => {
         await CatalogPage.open();
         await CatalogPage.addToWishlist("1 LIGHT PENDANT", wishlistName);
@@ -54,7 +54,7 @@ describe('Add products to wishlist and share wishlist via email', () => {
 
         expect(addedWishlistItems.length).toEqual(emailResults.products.length);
         // verify products in wishlist and in email
-        for (let iter=0; iter < addedWishlistItems.length; iter++) {
+        for (let iter = 0; iter < addedWishlistItems.length; iter++) {
             expect(addedWishlistItems[iter].product).toEqual(emailResults.products[iter].product);
             expect(addedWishlistItems[iter].price).toEqual(emailResults.products[iter].price);
         }

@@ -47,8 +47,8 @@ class CartPage extends Page {
     }
 
     async clearCart() {
-        this.open();
-        for await (const cartItem of this.cartItemsCleanAttrs) {
+        await this.open();
+        for (const cartItem of await this.cartItemsCleanAttrs) {
             await cartItem.$(this.btnRemoveFromCart).click()
         }
         await this.verifyCartEmpty();

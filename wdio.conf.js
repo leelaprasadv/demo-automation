@@ -41,7 +41,7 @@ exports.config = {
     // will be called from there.
     //
     specs: [
-        './test/specs/wishlist.spec.js'
+        './test/specs/**/*.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -123,7 +123,7 @@ exports.config = {
     baseUrl: 'https://demo.swym.it',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 60000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -161,7 +161,7 @@ exports.config = {
     reporters: [
         'spec', 'allure'
     ],
-
+    screenshotPath: "./test/screenshots",
     reporterOptions: {
         allure: {
             outputDir: 'results',
@@ -277,9 +277,30 @@ exports.config = {
      */
     afterTest: function (test, context, { error, result, duration, passed, retries }) {
         // take a screenshot anytime a test fails and throws an error
-        if (error) {
-            browser.takeScreenshot();
+        const path = require('path');
+
+        // if test passed, ignore, else take and save screenshot.
+        if (passed) {
+        return;
         }
+
+        /*
+        * get the current date and clean it
+        * const date = (new Date()).toString().replace(/\s/g, '-').replace(/-\(\w+\)/, '');
+        */
+        const timestamp = new Date().toLocaleString('iso', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+        }).replace(/[ ]/g, '--').replace(':', '-');
+
+        // get current test title and clean it, to use it as file name
+        const filename = encodeURIComponent(`${test.parent}.${test.title.replace(/\s+/g, '-')}-${timestamp}`.replace(/[/]/g, '__')).replace(/%../, '.');
+        const filePath = path.resolve(this.screenshotPath, `${filename}.png`);
+        browser.saveScreenshot(filePath);
     },
 
 
