@@ -33,7 +33,9 @@
         "wait-for-event-promise": "^1.1.0",
         "wdio-allure-reporter": "^0.8.3",
         "wdio-chromedriver-service": "^8.1.1",
-        "wdio-wait-for": "^2.2.6"
+        "wdio-wait-for": "^2.2.6",
+        "ws": ">=8.17.1",
+        "semver": ">=5.7.2"
     },
     "devDependencies": {
         "clipboardy": "^3.0.0"
